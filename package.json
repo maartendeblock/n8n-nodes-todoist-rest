@@ -1,0 +1,58 @@
+{
+	"name": "n8n-nodes-todoist-rest",
+	"version": "0.1.0",
+	"description": "Custom n8n node for Todoist REST API",
+	"author": {
+		"name": "Maarten De Block"
+	},
+	"license": "MIT",
+	"keywords": [
+		"n8n-community-node-package"
+	],
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/maartendeblock/n8n-nodes-todoist-rest.git"
+	},
+	"scripts": {
+		"preinstall": "npx only-allow pnpm",
+		"build": "tsc && gulp build:icons",
+		"dev": "tsc --watch",
+		"format": "prettier nodes  --write",
+		"lint": "eslint nodes  package.json",
+		"lintfix": "eslint nodes  package.json --fix",
+		"prepublishOnly": "pnpm build && pnpm lint -c .eslintrc.prepublish.js nodes  package.json"
+	},
+	"files": [
+		"dist"
+	],
+	"packageManager": "pnpm@10.8.0",
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [],
+		"nodes": [
+			"dist/nodes/DemoTrigger/DemoTrigger.node.js"
+		]
+	},
+	"dependencies": {
+		"n8n-core": "^1.14.1",
+		"n8n-workflow": "^1.82.0"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "^3.3.1",
+		"@eslint/js": "^9.24.0",
+		"@types/node": "^22.14.0",
+		"@typescript-eslint/parser": "^8.29.1",
+		"eslint": "^9.24.0",
+		"eslint-plugin-n8n-nodes-base": "^1.16.3",
+		"globals": "^16.0.0",
+		"gulp": "^5.0.0",
+		"gulp-json-modify": "^1.0.2",
+		"prettier": "^3.5.3",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
