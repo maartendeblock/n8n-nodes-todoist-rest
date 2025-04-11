@@ -41,6 +41,13 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+.DS_Store
+.tmp
+tmp
+dist
+npm-debug.log*
+yarn.lock
+.vscode/launch.json
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
