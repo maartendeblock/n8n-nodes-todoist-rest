@@ -1,14 +1,6 @@
 import { ApplicationError, IDataObject, jsonParse } from 'n8n-workflow';
-import {
-	Command,
-	CommandTypes,
-	Context,
-	CreateTaskRequest,
-	OperationHandler,
-	Section,
-	SyncRequest,
-	TodoistResponse,
-} from '../types/taskTypes';
+import { Command, CommandTypes, CreateTaskRequest, Section, SyncRequest } from '../types/taskTypes';
+import { Context, OperationHandler, TodoistResponse } from '../types/index';
 import { FormatDueDatetime, todoistApiRequest, todoistSyncRequest } from '../api/todoistApi';
 import { v4 as uuid } from 'uuid';
 

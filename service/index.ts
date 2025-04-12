@@ -1,4 +1,4 @@
-import { Context, OperationType, Service, TodoistResponse } from '../types/taskTypes';
+import { Context, OperationType, Service, TodoistResponse } from '../types/index';
 import {
 	CloseHandler,
 	CreateHandler,
@@ -10,6 +10,16 @@ import {
 	SyncHandler,
 	UpdateHandler,
 } from '../operations/taskOperationHandler';
+import {
+	GetAllProjects,
+	GetProject,
+	DeleteProject,
+	CreateProject,
+	UpdateProject,
+	ArchiveProject,
+	UnarchiveProject,
+	GetAllCollaborators,
+} from '../operations/projectsOperationHandler';
 
 export class TodoistCustomService implements Service {
 	async execute(
@@ -30,5 +40,13 @@ export class TodoistCustomService implements Service {
 		update: new UpdateHandler(),
 		move: new MoveHandler(),
 		sync: new SyncHandler(),
+		getAllProjects: new GetAllProjects(),
+		createProject: new CreateProject(),
+		getProject: new GetProject(),
+		deleteProject: new DeleteProject(),
+		updateProject: new UpdateProject(),
+		archiveProject: new ArchiveProject(),
+		unarchiveProject: new UnarchiveProject(),
+		getProjectCollaborators: new GetAllCollaborators(),
 	};
 }

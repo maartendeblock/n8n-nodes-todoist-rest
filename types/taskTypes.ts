@@ -1,44 +1,13 @@
-import {
-	IDataObject,
-	IExecuteFunctions,
-	IHookFunctions,
-	ILoadOptionsFunctions,
-} from 'n8n-workflow';
-
-export type Context = IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions;
-
-export type OperationType =
-	| 'create'
-	| 'close'
-	| 'delete'
-	| 'get'
-	| 'getAll'
-	| 'reopen'
-	| 'update'
-	| 'move'
-	| 'sync';
+import { IDataObject } from 'n8n-workflow';
 
 export interface Section {
 	name: string;
 	id: string;
 }
 
-export interface Service {
-	execute(ctx: Context, operation: OperationType, itemIndex: number): Promise<TodoistResponse>;
-}
-
 export interface TodoistProjectType {
 	id: number;
 	name: string;
-}
-
-export interface TodoistResponse {
-	success?: boolean;
-	data?: IDataObject;
-}
-
-export interface OperationHandler {
-	handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse>;
 }
 
 export interface CreateTaskRequest {

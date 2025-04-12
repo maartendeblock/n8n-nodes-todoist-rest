@@ -5,7 +5,7 @@ import {
 	JsonObject,
 	NodeApiError,
 } from 'n8n-workflow';
-import { Context } from '../types/taskTypes';
+import { Context } from '../types/index';
 
 export function FormatDueDatetime(isoString: string): string {
 	// Assuming that the problem with incorrect date format was caused by milliseconds

@@ -8,9 +8,10 @@ import {
 } from 'n8n-workflow';
 
 import { todoistTaskProperties } from '../../properties/taskProperties';
+import { todoistProjectsProperties } from '../../properties/projectsProperties';
 import { customMethods } from '../../methods/index';
 import { TodoistCustomService } from '../../service/index';
-import { OperationType } from '../../types/taskTypes';
+import { OperationType } from '../../types/index';
 
 export class TodoistCustomNode implements INodeType {
 	methods = customMethods;
@@ -75,6 +76,7 @@ export class TodoistCustomNode implements INodeType {
 				required: true,
 			},
 			...todoistTaskProperties.map((property) => property),
+			...todoistProjectsProperties.map((property) => property),
 		],
 	};
 
@@ -93,6 +95,10 @@ export class TodoistCustomNode implements INodeType {
 		for (let i = 0; i < length; i++) {
 			try {
 				if (resource === 'task') {
+					responseData = await service.execute(this, operation as OperationType, i);
+				}
+
+				if (resource === 'projects') {
 					responseData = await service.execute(this, operation as OperationType, i);
 				}
 
