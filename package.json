@@ -29,9 +29,11 @@
 	"packageManager": "pnpm@10.8.0",
 	"n8n": {
 		"n8nNodesApiVersion": 1,
-		"credentials": [],
+		"credentials": [
+			"dist/credentials/TodoistApi.credentials.js"
+		],
 		"nodes": [
-			"dist/nodes/DemoTrigger/DemoTrigger.node.js"
+			"dist/nodes/TodoistNode/TodoistCustomNode.node.js"
 		]
 	},
 	"dependencies": {
@@ -39,6 +41,7 @@
 		"n8n-workflow": "^1.82.0"
 	},
 	"devDependencies": {
+		"@types/uuid": "^10.0.0",
 		"@eslint/eslintrc": "^3.3.1",
 		"@eslint/js": "^9.24.0",
 		"@types/node": "^22.14.0",
