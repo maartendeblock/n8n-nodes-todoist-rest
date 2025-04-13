@@ -22,7 +22,19 @@ export type OperationType =
 	| 'update'
 	| 'move'
 	| 'sync'
-	| 'getAllProjects';
+	| 'getAllProjects'
+	| 'createProject'
+	| 'getProject'
+	| 'updateProject'
+	| 'archiveProject'
+	| 'unarchiveProject'
+	| 'deleteProject'
+	| 'getProjectCollaborators'
+	| 'getAllSections'
+	| 'createSection'
+	| 'getSection'
+	| 'updateSection'
+	| 'deleteSection';
 
 export interface Service {
 	execute(ctx: Context, operation: OperationType, itemIndex: number): Promise<TodoistResponse>;

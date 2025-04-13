@@ -110,10 +110,10 @@ export class GetAllCollaborators implements OperationHandler {
 export class DeleteProject implements OperationHandler {
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
 		const projectId = ctx.getNodeParameter('projectId', itemIndex) as string;
-		const data = await todoistApiRequest.call(ctx, 'DELETE', `/projects/${projectId}`);
+		await todoistApiRequest.call(ctx, 'DELETE', `/projects/${projectId}`);
 
 		return {
-			data,
+			success: true,
 		};
 	}
 }

@@ -9,6 +9,8 @@ import {
 
 import { todoistTaskProperties } from '../../properties/taskProperties';
 import { todoistProjectsProperties } from '../../properties/projectsProperties';
+import { todoistSectionProperties } from '../../properties/sectionProperties';
+
 import { customMethods } from '../../methods/index';
 import { TodoistCustomService } from '../../service/index';
 import { OperationType } from '../../types/index';
@@ -71,12 +73,18 @@ export class TodoistCustomNode implements INodeType {
 						value: 'projects',
 						description: 'Projects resource',
 					},
+					{
+						name: 'Section',
+						value: 'sections',
+						description: 'Section resource',
+					},
 				],
 				default: 'task',
 				required: true,
 			},
 			...todoistTaskProperties.map((property) => property),
 			...todoistProjectsProperties.map((property) => property),
+			...todoistSectionProperties.map((property) => property),
 		],
 	};
 
@@ -99,6 +107,10 @@ export class TodoistCustomNode implements INodeType {
 				}
 
 				if (resource === 'projects') {
+					responseData = await service.execute(this, operation as OperationType, i);
+				}
+
+				if (resource === 'sections') {
 					responseData = await service.execute(this, operation as OperationType, i);
 				}
 

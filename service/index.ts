@@ -21,6 +21,14 @@ import {
 	GetAllCollaborators,
 } from '../operations/projectsOperationHandler';
 
+import {
+	CreateSection,
+	DeleteSection,
+	GetAllSections,
+	GetSection,
+	UpdateSection,
+} from '../operations/sectionOperationHandler';
+
 export class TodoistCustomService implements Service {
 	async execute(
 		ctx: Context,
@@ -48,5 +56,10 @@ export class TodoistCustomService implements Service {
 		archiveProject: new ArchiveProject(),
 		unarchiveProject: new UnarchiveProject(),
 		getProjectCollaborators: new GetAllCollaborators(),
+		getAllSections: new GetAllSections(),
+		createSection: new CreateSection(),
+		getSection: new GetSection(),
+		updateSection: new UpdateSection(),
+		deleteSection: new DeleteSection(),
 	};
 }
