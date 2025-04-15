@@ -34,7 +34,12 @@ export type OperationType =
 	| 'createSection'
 	| 'getSection'
 	| 'updateSection'
-	| 'deleteSection';
+	| 'deleteSection'
+	| 'getAllComments'
+	| 'createComment'
+	| 'getComment'
+	| 'updateComment'
+	| 'deleteComment';
 
 export interface Service {
 	execute(ctx: Context, operation: OperationType, itemIndex: number): Promise<TodoistResponse>;

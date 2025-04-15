@@ -29,6 +29,14 @@ import {
 	UpdateSection,
 } from '../operations/sectionOperationHandler';
 
+import {
+	CreateComment,
+	DeleteComment,
+	GetAllComments,
+	GetComment,
+	UpdateComment,
+} from '../operations/commentsOperationHandler';
+
 export class TodoistCustomService implements Service {
 	async execute(
 		ctx: Context,
@@ -61,5 +69,10 @@ export class TodoistCustomService implements Service {
 		getSection: new GetSection(),
 		updateSection: new UpdateSection(),
 		deleteSection: new DeleteSection(),
+		getAllComments: new GetAllComments(),
+		createComment: new CreateComment(),
+		getComment: new GetComment(),
+		updateComment: new UpdateComment(),
+		deleteComment: new DeleteComment(),
 	};
 }
