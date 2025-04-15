@@ -7,10 +7,13 @@ import {
 	NodeConnectionType,
 } from 'n8n-workflow';
 
-import { todoistTaskProperties } from '../../properties/taskProperties';
-import { todoistProjectsProperties } from '../../properties/projectsProperties';
-import { todoistSectionProperties } from '../../properties/sectionProperties';
-import { todoistCommentsProperties } from '../../properties/commentsProperties';
+import {
+	todoistTaskProperties,
+	todoistProjectsProperties,
+	todoistSectionProperties,
+	todoistCommentsProperties,
+	todoistLabelsProperties,
+} from '../../properties';
 
 import { customMethods } from '../../methods/index';
 import { TodoistCustomService } from '../../service/index';
@@ -84,6 +87,11 @@ export class TodoistCustomNode implements INodeType {
 						value: 'comments',
 						description: 'Comments resource',
 					},
+					{
+						name: 'Label',
+						value: 'labels',
+						description: 'Labels resource',
+					},
 				],
 				default: 'task',
 				required: true,
@@ -92,6 +100,7 @@ export class TodoistCustomNode implements INodeType {
 			...todoistProjectsProperties.map((property) => property),
 			...todoistSectionProperties.map((property) => property),
 			...todoistCommentsProperties.map((property) => property),
+			...todoistLabelsProperties.map((property) => property),
 		],
 	};
 
@@ -104,24 +113,9 @@ export class TodoistCustomNode implements INodeType {
 		const resource = this.getNodeParameter('resource', 0);
 		const operation = this.getNodeParameter('operation', 0);
 
-		console.log(resource, operation);
-		console.log(this.getNode().parameters);
-
 		for (let i = 0; i < length; i++) {
 			try {
-				if (resource === 'task') {
-					responseData = await service.execute(this, operation as OperationType, i);
-				}
-
-				if (resource === 'projects') {
-					responseData = await service.execute(this, operation as OperationType, i);
-				}
-
-				if (resource === 'sections') {
-					responseData = await service.execute(this, operation as OperationType, i);
-				}
-
-				if (resource === 'comments') {
+				if (['task', 'projects', 'sections', 'comments', 'labels'].includes(resource)) {
 					responseData = await service.execute(this, operation as OperationType, i);
 				}
 

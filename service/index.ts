@@ -1,5 +1,6 @@
 import { Context, OperationType, Service, TodoistResponse } from '../types/index';
 import {
+	// Task operations
 	CloseHandler,
 	CreateHandler,
 	DeleteHandler,
@@ -9,8 +10,7 @@ import {
 	ReopenHandler,
 	SyncHandler,
 	UpdateHandler,
-} from '../operations/taskOperationHandler';
-import {
+	// Project operations
 	GetAllProjects,
 	GetProject,
 	DeleteProject,
@@ -19,23 +19,27 @@ import {
 	ArchiveProject,
 	UnarchiveProject,
 	GetAllCollaborators,
-} from '../operations/projectsOperationHandler';
-
-import {
+	// Section operations
 	CreateSection,
 	DeleteSection,
 	GetAllSections,
 	GetSection,
 	UpdateSection,
-} from '../operations/sectionOperationHandler';
-
-import {
+	// Comment operations
 	CreateComment,
 	DeleteComment,
 	GetAllComments,
 	GetComment,
 	UpdateComment,
-} from '../operations/commentsOperationHandler';
+	CreatePersonalLabel,
+	DeletePersonalLabel,
+	GetAllPersonalLabels,
+	GetAllSharedLabels,
+	GetPersonalLabel,
+	RemoveSharedLabels,
+	RenameSharedLabels,
+	UpdatePersonalLabel,
+} from '../operations';
 
 export class TodoistCustomService implements Service {
 	async execute(
@@ -74,5 +78,13 @@ export class TodoistCustomService implements Service {
 		getComment: new GetComment(),
 		updateComment: new UpdateComment(),
 		deleteComment: new DeleteComment(),
+		getAllPersonalLabels: new GetAllPersonalLabels(),
+		createPersonalLabel: new CreatePersonalLabel(),
+		getPersonalLabel: new GetPersonalLabel(),
+		updatePersonalLabel: new UpdatePersonalLabel(),
+		deletePersonalLabel: new DeletePersonalLabel(),
+		getAllSharedLabels: new GetAllSharedLabels(),
+		renameSharedLabels: new RenameSharedLabels(),
+		removeSharedLabels: new RemoveSharedLabels(),
 	};
 }
