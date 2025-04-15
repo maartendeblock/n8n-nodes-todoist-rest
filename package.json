@@ -30,7 +30,8 @@
 	"n8n": {
 		"n8nNodesApiVersion": 1,
 		"credentials": [
-			"dist/credentials/TodoistApi.credentials.js"
+			"dist/credentials/TodoistApi.credentials.js",
+			"dist/credentials/TodoistOAuth2Api.credentials.js"
 		],
 		"nodes": [
 			"dist/nodes/TodoistNode/TodoistCustomNode.node.js"

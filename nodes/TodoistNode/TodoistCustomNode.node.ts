@@ -43,6 +43,15 @@ export class TodoistCustomNode implements INodeType {
 					},
 				},
 			},
+			{
+				name: 'todoistOAuth2Api',
+				required: true,
+				displayOptions: {
+					show: {
+						authentication: ['oAuth2'],
+					},
+				},
+			},
 		],
 		properties: [
 			{
@@ -54,10 +63,10 @@ export class TodoistCustomNode implements INodeType {
 						name: 'API Key',
 						value: 'apiKey',
 					},
-					// {
-					// 	name: 'OAuth2',
-					// 	value: 'oAuth2',
-					// },
+					{
+						name: 'OAuth2',
+						value: 'oAuth2',
+					},
 				],
 				default: 'apiKey',
 			},
