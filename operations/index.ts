@@ -19,6 +19,7 @@ export {
 	ArchiveProject,
 	UnarchiveProject,
 	GetAllCollaborators,
+	GetOrCreateProject,
 } from './projectsOperationHandler';
 
 export {

@@ -117,3 +117,42 @@ export class DeleteProject implements OperationHandler {
 		};
 	}
 }
+
+export class GetOrCreateProject implements OperationHandler {
+	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
+		const name = ctx.getNodeParameter('projectName', itemIndex) as string;
+		const options = ctx.getNodeParameter('options', itemIndex) as IDataObject;
+
+		// First, get all projects to check if one with the same name and parent exists
+		const allProjects = await todoistApiRequest.call(ctx, 'GET', '/projects');
+		
+		// Find a project with matching name and parent_id
+		const existingProject = allProjects.find((project: any) => 
+			project.name === name && 
+			(!options.parentId || project.parent_id === options.parentId)
+		);
+
+		if (existingProject) {
+			return {
+				data: existingProject,
+			};
+		}
+
+		// If no matching project found, create a new one
+		const body = Object.fromEntries(
+			Object.entries({
+				name,
+				parent_id: options.parentId,
+				color: options.color,
+				is_favorite: options.isFavorite,
+				view_style: options.viewStyle,
+			}).filter(([_, value]) => value !== null && value !== undefined),
+		);
+
+		const data = await todoistApiRequest.call(ctx, 'POST', '/projects', body as IDataObject);
+
+		return {
+			data,
+		};
+	}
+}

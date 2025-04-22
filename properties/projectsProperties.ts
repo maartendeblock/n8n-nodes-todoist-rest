@@ -28,6 +28,12 @@ export const todoistProjectsProperties = [
 				action: 'Create a project',
 			},
 			{
+				name: 'Get or Create',
+				value: 'getOrCreateProject',
+				description: 'Get a project by name and parent, or create it if it doesn\'t exist',
+				action: 'Get or create a project',
+			},
+			{
 				name: 'Get',
 				value: 'getProject',
 				description: 'Get a project',
@@ -75,7 +81,7 @@ export const todoistProjectsProperties = [
 		displayOptions: {
 			show: {
 				resource: ['projects'],
-				operation: ['createProject'],
+				operation: ['createProject', 'getOrCreateProject'],
 			},
 		},
 	},
@@ -109,7 +115,7 @@ export const todoistProjectsProperties = [
 		displayOptions: {
 			show: {
 				resource: ['projects'],
-				operation: ['createProject'],
+				operation: ['createProject', 'getOrCreateProject'],
 			},
 		},
 		options: [

@@ -30,6 +30,7 @@ export type OperationType =
 	| 'unarchiveProject'
 	| 'deleteProject'
 	| 'getProjectCollaborators'
+	| 'getOrCreateProject'
 	| 'getAllSections'
 	| 'createSection'
 	| 'getSection'
