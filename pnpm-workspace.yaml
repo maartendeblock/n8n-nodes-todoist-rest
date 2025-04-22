@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - cpu-features
+  - eslint-plugin-n8n-nodes-base
+  - ssh2
+
+overrides:
+  n8n-nodes-todoist-rest: 'link:'
