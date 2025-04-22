@@ -27,6 +27,12 @@ export const todoistLabelsProperties = [
 				action: 'Create a new personal label',
 			},
 			{
+				name: 'Get or Create',
+				value: 'getOrCreatePersonalLabel',
+				description: 'Get a personal label by name, or create it if it doesn\'t exist',
+				action: 'Get or create a personal label',
+			},
+			{
 				name: 'Get',
 				value: 'getPersonalLabel',
 				description: 'Get a personal label',
@@ -75,7 +81,7 @@ export const todoistLabelsProperties = [
 		displayOptions: {
 			show: {
 				resource: ['labels'],
-				operation: ['createPersonalLabel'],
+				operation: ['createPersonalLabel', 'getOrCreatePersonalLabel'],
 			},
 		},
 	},
@@ -101,7 +107,7 @@ export const todoistLabelsProperties = [
 		displayOptions: {
 			show: {
 				resource: ['labels'],
-				operation: ['createPersonalLabel'],
+				operation: ['createPersonalLabel', 'getOrCreatePersonalLabel'],
 			},
 		},
 		options: [

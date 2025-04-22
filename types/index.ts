@@ -47,6 +47,7 @@ export type OperationType =
 	| 'getPersonalLabel'
 	| 'updatePersonalLabel'
 	| 'deletePersonalLabel'
+	| 'getOrCreatePersonalLabel'
 	| 'getAllSharedLabels'
 	| 'renameSharedLabels'
 	| 'removeSharedLabels';

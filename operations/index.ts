@@ -48,4 +48,5 @@ export {
 	RemoveSharedLabels,
 	RenameSharedLabels,
 	UpdatePersonalLabel,
+	GetOrCreatePersonalLabel,
 } from './labelsOperationHandler';

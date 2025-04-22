@@ -42,6 +42,7 @@ import {
 	UpdatePersonalLabel,
 	// Task operations
 	GetOrCreateTask,
+	GetOrCreatePersonalLabel,
 } from '../operations';
 
 export class TodoistCustomService implements Service {
@@ -88,6 +89,7 @@ export class TodoistCustomService implements Service {
 		getPersonalLabel: new GetPersonalLabel(),
 		updatePersonalLabel: new UpdatePersonalLabel(),
 		deletePersonalLabel: new DeletePersonalLabel(),
+		getOrCreatePersonalLabel: new GetOrCreatePersonalLabel(new CreatePersonalLabel()),
 		getAllSharedLabels: new GetAllSharedLabels(),
 		renameSharedLabels: new RenameSharedLabels(),
 		removeSharedLabels: new RemoveSharedLabels(),

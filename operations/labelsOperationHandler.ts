@@ -131,3 +131,26 @@ export class RemoveSharedLabels implements OperationHandler {
 		};
 	}
 }
+
+export class GetOrCreatePersonalLabel implements OperationHandler {
+	constructor(private createPersonalLabel: CreatePersonalLabel) {}
+
+	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
+		const name = ctx.getNodeParameter('labelName', itemIndex) as string;
+
+		// First, get all labels to check if one with the same name exists
+		const allLabels = await todoistApiRequest.call(ctx, 'GET', '/labels');
+		
+		// Find a label with matching name
+		const existingLabel = allLabels.find((label: any) => label.name === name);
+
+		if (existingLabel) {
+			return {
+				data: existingLabel,
+			};
+		}
+
+		// If no matching label found, create a new one using the CreatePersonalLabel handler
+		return this.createPersonalLabel.handleOperation(ctx, itemIndex);
+	}
+}
