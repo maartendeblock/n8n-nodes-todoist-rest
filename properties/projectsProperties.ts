@@ -122,9 +122,12 @@ export const todoistProjectsProperties = [
 			{
 				displayName: 'Parent ID',
 				name: 'parentId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getProjects',
+				},
 				default: '',
-				description: 'Parent project ID',
+				description: 'The ID of the parent project. This is a string value.',
 			},
 			{
 				displayName: 'Color',
@@ -186,9 +189,12 @@ export const todoistProjectsProperties = [
 			{
 				displayName: 'Parent ID',
 				name: 'parentId',
-				type: 'string',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getProjects',
+				},
 				default: '',
-				description: 'Parent project ID',
+				description: 'The ID of the parent project. This is a string value.',
 			},
 			{
 				displayName: 'Color',
