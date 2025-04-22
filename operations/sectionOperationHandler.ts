@@ -80,3 +80,27 @@ export class DeleteSection implements OperationHandler {
 		};
 	}
 }
+
+export class GetOrCreateSection implements OperationHandler {
+	constructor(private createSection: CreateSection) {}
+
+	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
+		const name = ctx.getNodeParameter('sectionName', itemIndex) as string;
+		const projectId = ctx.getNodeParameter('projectId', itemIndex) as string;
+
+		// First, get all sections to check if one with the same name exists in the project
+		const allSections = await todoistApiRequest.call(ctx, 'GET', `/sections?project_id=${projectId}`);
+		
+		// Find a section with matching name in the same project
+		const existingSection = allSections.find((section: any) => section.name === name);
+
+		if (existingSection) {
+			return {
+				data: existingSection,
+			};
+		}
+
+		// If no matching section found, create a new one using the CreateSection handler
+		return this.createSection.handleOperation(ctx, itemIndex);
+	}
+}

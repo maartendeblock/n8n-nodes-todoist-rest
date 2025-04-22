@@ -24,11 +24,12 @@ export {
 } from './projectsOperationHandler';
 
 export {
-	CreateSection,
-	DeleteSection,
 	GetAllSections,
+	CreateSection,
+	GetOrCreateSection,
 	GetSection,
 	UpdateSection,
+	DeleteSection,
 } from './sectionOperationHandler';
 
 export {

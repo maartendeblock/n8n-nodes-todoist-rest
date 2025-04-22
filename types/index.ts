@@ -34,6 +34,7 @@ export type OperationType =
 	| 'getOrCreateProject'
 	| 'getAllSections'
 	| 'createSection'
+	| 'getOrCreateSection'
 	| 'getSection'
 	| 'updateSection'
 	| 'deleteSection'

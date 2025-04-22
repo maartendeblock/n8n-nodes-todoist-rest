@@ -43,6 +43,7 @@ import {
 	// Task operations
 	GetOrCreateTask,
 	GetOrCreatePersonalLabel,
+	GetOrCreateSection,
 } from '../operations';
 
 export class TodoistCustomService implements Service {
@@ -76,6 +77,7 @@ export class TodoistCustomService implements Service {
 		getOrCreateProject: new GetOrCreateProject(new CreateProject()),
 		getAllSections: new GetAllSections(),
 		createSection: new CreateSection(),
+		getOrCreateSection: new GetOrCreateSection(new CreateSection()),
 		getSection: new GetSection(),
 		updateSection: new UpdateSection(),
 		deleteSection: new DeleteSection(),
