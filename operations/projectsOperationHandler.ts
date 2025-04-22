@@ -119,6 +119,8 @@ export class DeleteProject implements OperationHandler {
 }
 
 export class GetOrCreateProject implements OperationHandler {
+	constructor(private createProject: CreateProject) {}
+
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
 		const name = ctx.getNodeParameter('projectName', itemIndex) as string;
 		const options = ctx.getNodeParameter('options', itemIndex) as IDataObject;
@@ -138,21 +140,7 @@ export class GetOrCreateProject implements OperationHandler {
 			};
 		}
 
-		// If no matching project found, create a new one
-		const body = Object.fromEntries(
-			Object.entries({
-				name,
-				parent_id: options.parentId,
-				color: options.color,
-				is_favorite: options.isFavorite,
-				view_style: options.viewStyle,
-			}).filter(([_, value]) => value !== null && value !== undefined),
-		);
-
-		const data = await todoistApiRequest.call(ctx, 'POST', '/projects', body as IDataObject);
-
-		return {
-			data,
-		};
+		// If no matching project found, create a new one using the CreateProject handler
+		return this.createProject.handleOperation(ctx, itemIndex);
 	}
 }

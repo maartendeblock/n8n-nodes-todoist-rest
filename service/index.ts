@@ -72,7 +72,7 @@ export class TodoistCustomService implements Service {
 		archiveProject: new ArchiveProject(),
 		unarchiveProject: new UnarchiveProject(),
 		getProjectCollaborators: new GetAllCollaborators(),
-		getOrCreateProject: new GetOrCreateProject(),
+		getOrCreateProject: new GetOrCreateProject(new CreateProject()),
 		getAllSections: new GetAllSections(),
 		createSection: new CreateSection(),
 		getSection: new GetSection(),
