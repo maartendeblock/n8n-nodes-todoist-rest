@@ -316,3 +316,39 @@ export class SyncHandler implements OperationHandler {
 		return command.type === CommandTypes.ITEM_ADD;
 	}
 }
+
+export class GetOrCreateTask implements OperationHandler {
+	constructor(private createHandler: CreateHandler) {}
+
+	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
+		const content = ctx.getNodeParameter('content', itemIndex) as string;
+		const projectId = ctx.getNodeParameter('project', itemIndex, undefined, {
+			extractValue: true,
+		}) as number;
+		const options = ctx.getNodeParameter('options', itemIndex) as IDataObject;
+
+		// First, get all tasks in the project to check if one with the same content exists
+		const qs: IDataObject = { project_id: projectId };
+		if (options.section) {
+			qs.section_id = options.section;
+		}
+		const allTasks = await todoistApiRequest.call(ctx, 'GET', '/tasks', {}, qs);
+		
+		// Find a task with matching content, project, section, and parent
+		const existingTask = allTasks.find((task: any) => 
+			task.content === content && 
+			task.project_id === projectId &&
+			(!options.section || task.section_id === options.section) &&
+			(!options.parentId || task.parent_id === options.parentId)
+		);
+
+		if (existingTask) {
+			return {
+				data: existingTask,
+			};
+		}
+
+		// If no matching task found, create a new one using the CreateHandler
+		return this.createHandler.handleOperation(ctx, itemIndex);
+	}
+}

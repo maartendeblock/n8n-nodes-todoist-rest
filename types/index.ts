@@ -22,6 +22,7 @@ export type OperationType =
 	| 'update'
 	| 'move'
 	| 'sync'
+	| 'getOrCreateTask'
 	| 'getAllProjects'
 	| 'createProject'
 	| 'getProject'

@@ -8,6 +8,7 @@ export {
 	ReopenHandler,
 	SyncHandler,
 	UpdateHandler,
+	GetOrCreateTask,
 } from './taskOperationHandler';
 
 export {

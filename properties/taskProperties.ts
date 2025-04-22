@@ -26,6 +26,12 @@ export const todoistTaskProperties = [
 				action: 'Create a task',
 			},
 			{
+				name: 'Get or Create',
+				value: 'getOrCreateTask',
+				description: 'Get a task by content and project, or create it if it doesn\'t exist',
+				action: 'Get or create a task',
+			},
+			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a task',
@@ -104,7 +110,7 @@ export const todoistTaskProperties = [
 		displayOptions: {
 			show: {
 				resource: ['task'],
-				operation: ['create', 'move', 'sync'],
+				operation: ['create', 'move', 'sync', 'getOrCreateTask'],
 			},
 		},
 		description: 'The destination project. Choose from the list, or specify an ID.',
@@ -180,7 +186,7 @@ export const todoistTaskProperties = [
 		displayOptions: {
 			show: {
 				resource: ['task'],
-				operation: ['create'],
+				operation: ['create', 'getOrCreateTask'],
 			},
 		},
 		default: [],
@@ -197,7 +203,7 @@ export const todoistTaskProperties = [
 		displayOptions: {
 			show: {
 				resource: ['task'],
-				operation: ['create'],
+				operation: ['create', 'getOrCreateTask'],
 			},
 		},
 		default: '',
@@ -227,7 +233,7 @@ export const todoistTaskProperties = [
 		displayOptions: {
 			show: {
 				resource: ['task'],
-				operation: ['create'],
+				operation: ['create', 'getOrCreateTask'],
 			},
 		},
 		options: [
