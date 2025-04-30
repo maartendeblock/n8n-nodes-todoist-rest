@@ -89,8 +89,12 @@ export class GetOrCreateSection implements OperationHandler {
 		const projectId = ctx.getNodeParameter('projectId', itemIndex) as string;
 
 		// First, get all sections to check if one with the same name exists in the project
-		const allSections = await todoistApiRequest.call(ctx, 'GET', `/sections?project_id=${projectId}`);
-		
+		const allSections = await todoistApiRequest.call(
+			ctx,
+			'GET',
+			`/sections?project_id=${projectId}`,
+		);
+
 		// Find a section with matching name in the same project
 		const existingSection = allSections.find((section: any) => section.name === name);
 

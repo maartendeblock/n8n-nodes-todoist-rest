@@ -25,6 +25,7 @@ export class TodoistCustomNode implements INodeType {
 		displayName: 'Todoist Custom Node',
 		name: 'todoistCustomNode',
 		group: ['output'],
+		icon: 'file:todoist.svg',
 		version: 1,
 		defaults: {
 			name: 'Todoist Custom Node',
