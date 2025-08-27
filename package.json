@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-todoist-rest",
-	"version": "2.0.0",
+	"version": "2.0.0-beta.1",
 	"description": "Custom n8n node for Todoist REST API",
 	"author": {
 		"name": "Maarten De Block"

@@ -489,6 +489,18 @@ export const todoistTaskProperties = [
 				default: [],
 			},
 			{
+				displayName: 'Parent Name or ID',
+				name: 'parentId',
+				type: 'options',
+				typeOptions: {
+					loadOptionsMethod: 'getItems',
+					loadOptionsDependsOn: ['updateFields.project'],
+				},
+				default: {},
+				description:
+					'The parent task. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>. To make this task a subtask, select a parent. To remove parent (convert from subtask to regular task), leave empty.',
+			},
+			{
 				displayName: 'Priority',
 				name: 'priority',
 				type: 'number',

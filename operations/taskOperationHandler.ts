@@ -254,6 +254,10 @@ export class UpdateHandler implements OperationHandler {
 			body.due_lang = updateFields.dueLang as string;
 		}
 
+		if (updateFields.parentId) {
+			body.parent_id = updateFields.parentId as string;
+		}
+
 		await todoistApiRequest.call(ctx, 'POST', `/tasks/${id}`, body as IDataObject);
 
 		return { success: true };

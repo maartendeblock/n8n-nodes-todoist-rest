@@ -5,20 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2025-08-27
+## [2.0.0-beta.1] - 2025-08-27
 
-### Changed
+### 🚀 Major Changes
 - **BREAKING**: Migrated from Todoist REST API v2 to the new unified Todoist API v1
 - API endpoint changed from `api.todoist.com/rest/v2/` to `api.todoist.com/api/v1/`
-- All list operations now support cursor-based pagination for improved performance
-- Task filtering operations now use dedicated `/tasks/filter` endpoint
-- All resource IDs are now opaque strings instead of numeric values
+- All resource IDs are now opaque strings instead of numeric values for future compatibility
 
-### Added
-- Cursor-based pagination support for all list operations (tasks, projects, sections, labels, comments)
-- Dedicated filter endpoint for tasks with advanced filter syntax support
-- Enhanced error handling for the new API structure
-- Better response handling with `results` array structure
+### ✨ New Features  
+- **Parent/Subtask Management**: Full support for task parent-child relationships
+  - Create subtasks directly with `parent_id` parameter in task creation
+  - Convert existing tasks to subtasks via update operation with `parent_id`
+  - Remove parent relationship (convert subtask back to regular task) by updating with empty `parent_id`
+- **Enhanced Task Retrieval**: Added `includeSubtasks` option to get task operation
+  - Automatically fetches and includes all subtasks when retrieving a parent task
+  - Subtasks returned in a `subtasks` array on the parent task object
+
+### 🔧 Improvements
+- **Cursor-based Pagination**: Support for all list operations (tasks, projects, sections, labels, comments)
+- **Advanced Task Filtering**: Dedicated `/tasks/filter` endpoint with natural language filter support
+- **Enhanced Error Handling**: Improved API response processing and error messages
+- **Better Response Structure**: All list operations now use `results` array structure
 
 ### Technical Details
 - Automatic pagination handling with `next_cursor` support
