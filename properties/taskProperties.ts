@@ -501,4 +501,26 @@ export const todoistTaskProperties = [
 			},
 		],
 	},
+	{
+		displayName: 'Options',
+		name: 'options',
+		type: 'collection',
+		placeholder: 'Add option',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['task'],
+				operation: ['get'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Include Subtasks',
+				name: 'includeSubtasks',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to include subtasks of the retrieved task in the response',
+			},
+		],
+	},
 ] as INodeProperties[];

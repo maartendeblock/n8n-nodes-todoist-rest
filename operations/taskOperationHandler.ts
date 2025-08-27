@@ -83,8 +83,25 @@ export class DeleteHandler implements OperationHandler {
 export class GetHandler implements OperationHandler {
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
 		const id = ctx.getNodeParameter('taskId', itemIndex) as string;
+		const options = ctx.getNodeParameter('options', itemIndex, {}) as IDataObject;
+		const includeSubtasks = options.includeSubtasks as boolean;
 
+		// Get the main task
 		const responseData = await todoistApiRequest.call(ctx, 'GET', `/tasks/${id}`);
+		
+		// If includeSubtasks is enabled, fetch subtasks
+		if (includeSubtasks) {
+			// Get all tasks in the same project to find subtasks
+			const projectId = responseData.project_id;
+			const allTasks = await todoistApiRequest.call(ctx, 'GET', '/tasks', {}, { project_id: projectId });
+			
+			// Find subtasks (tasks with parent_id matching our task id)
+			const subtasks = allTasks.filter((task: any) => task.parent_id === id);
+			
+			// Add subtasks to the response
+			responseData.subtasks = subtasks;
+		}
+
 		return {
 			data: responseData,
 		};
