@@ -6,15 +6,15 @@ export interface Section {
 }
 
 export interface TodoistProjectType {
-	id: number;
+	id: string;
 	name: string;
 }
 
 export interface CreateTaskRequest {
 	content?: string;
 	description?: string;
-	project_id?: number;
-	section_id?: number;
+	project_id?: string;
+	section_id?: string;
 	parent_id?: string;
 	order?: number;
 	labels?: string[];
@@ -45,9 +45,9 @@ export interface Command {
 	temp_id?: string;
 	args: {
 		parent_id?: string;
-		id?: number;
-		section_id?: number;
-		project_id?: number | string;
+		id?: string;
+		section_id?: string;
+		project_id?: string;
 		section?: string;
 		content?: string;
 	};

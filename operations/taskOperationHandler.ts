@@ -6,11 +6,11 @@ import { v4 as uuid } from 'uuid';
 
 export class CreateHandler implements OperationHandler {
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
-		//https://developer.todoist.com/rest/v2/#create-a-new-task
+		//https://developer.todoist.com/api/v1/tasks
 		const content = ctx.getNodeParameter('content', itemIndex) as string;
 		const projectId = ctx.getNodeParameter('project', itemIndex, undefined, {
 			extractValue: true,
-		}) as number;
+		}) as string;
 		const labels = ctx.getNodeParameter('labels', itemIndex) as string[];
 		const options = ctx.getNodeParameter('options', itemIndex) as IDataObject;
 
@@ -37,7 +37,7 @@ export class CreateHandler implements OperationHandler {
 		}
 
 		if (options.section) {
-			body.section_id = options.section as number;
+			body.section_id = options.section as string;
 		}
 
 		if (options.dueLang) {
@@ -93,7 +93,10 @@ export class GetHandler implements OperationHandler {
 		if (includeSubtasks) {
 			// Get all tasks in the same project to find subtasks
 			const projectId = responseData.project_id;
-			const allTasks = await todoistApiRequest.call(ctx, 'GET', '/tasks', {}, { project_id: projectId });
+			const allTasksResponse = await todoistApiRequest.call(ctx, 'GET', '/tasks', {}, { project_id: projectId });
+			
+			// API v1 returns results in a 'results' array
+			const allTasks = allTasksResponse.results || allTasksResponse;
 			
 			// Find subtasks (tasks with parent_id matching our task id)
 			const subtasks = allTasks.filter((task: any) => task.parent_id === id);
@@ -110,11 +113,20 @@ export class GetHandler implements OperationHandler {
 
 export class GetAllHandler implements OperationHandler {
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
-		//https://developer.todoist.com/rest/v2/#get-active-tasks
+		//https://developer.todoist.com/api/v1/tasks
 		const returnAll = ctx.getNodeParameter('returnAll', itemIndex) as boolean;
 		const filters = ctx.getNodeParameter('filters', itemIndex) as IDataObject;
 		const qs: IDataObject = {};
+		let endpoint = '/tasks';
+		let shouldUseFilterEndpoint = false;
 
+		// Check if we need to use the filter endpoint
+		if (filters.filter || filters.lang) {
+			endpoint = '/tasks/filter';
+			shouldUseFilterEndpoint = true;
+		}
+
+		// Basic filters supported by both endpoints
 		if (filters.projectId) {
 			qs.project_id = filters.projectId as string;
 		}
@@ -124,30 +136,61 @@ export class GetAllHandler implements OperationHandler {
 		if (filters.labelId) {
 			qs.label = filters.labelId as string;
 		}
-		if (filters.filter) {
-			qs.filter = filters.filter as string;
-		}
-		if (filters.lang) {
-			qs.lang = filters.lang as string;
-		}
 		if (filters.ids) {
 			qs.ids = filters.ids as string;
 		}
 
-		let responseData = await todoistApiRequest.call(ctx, 'GET', '/tasks', {}, qs);
-
-		if (!returnAll) {
-			const limit = ctx.getNodeParameter('limit', itemIndex) as number;
-			responseData = responseData.splice(0, limit);
+		// Filter-specific parameters (only for filter endpoint)
+		if (shouldUseFilterEndpoint) {
+			if (filters.filter) {
+				qs.filter = filters.filter as string;
+			}
+			if (filters.lang) {
+				qs.lang = filters.lang as string;
+			}
 		}
 
+		let allResults: any[] = [];
+		let nextCursor: string | null = null;
+		
+		do {
+			if (nextCursor) {
+				qs.cursor = nextCursor;
+			}
+
+			if (!returnAll) {
+				const limit = ctx.getNodeParameter('limit', itemIndex) as number;
+				qs.limit = Math.min(limit - allResults.length, 100); // API max is 100
+			}
+
+			const response = await todoistApiRequest.call(ctx, 'GET', endpoint, {}, qs);
+			const results = response.results || response;
+			
+			if (Array.isArray(results)) {
+				allResults = allResults.concat(results);
+			} else {
+				allResults.push(results);
+			}
+
+			nextCursor = response.next_cursor;
+			
+			// Stop if we have enough results for non-returnAll case
+			if (!returnAll) {
+				const limit = ctx.getNodeParameter('limit', itemIndex) as number;
+				if (allResults.length >= limit) {
+					allResults = allResults.slice(0, limit);
+					break;
+				}
+			}
+		} while (nextCursor && returnAll);
+
 		return {
-			data: responseData,
+			data: allResults as any,
 		};
 	}
 }
 
-async function getSectionIds(ctx: Context, projectId: number): Promise<Map<string, number>> {
+async function getSectionIds(ctx: Context, projectId: string): Promise<Map<string, string>> {
 	const sections: Section[] = await todoistApiRequest.call(
 		ctx,
 		'GET',
@@ -155,7 +198,7 @@ async function getSectionIds(ctx: Context, projectId: number): Promise<Map<strin
 		{},
 		{ project_id: projectId },
 	);
-	return new Map(sections.map((s) => [s.name, s.id as unknown as number]));
+	return new Map(sections.map((s) => [s.name, s.id]));
 }
 
 export class ReopenHandler implements OperationHandler {
@@ -173,7 +216,7 @@ export class ReopenHandler implements OperationHandler {
 
 export class UpdateHandler implements OperationHandler {
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
-		//https://developer.todoist.com/rest/v2/#update-a-task
+		//https://developer.todoist.com/api/v1/tasks/{task_id}
 		const id = ctx.getNodeParameter('taskId', itemIndex) as string;
 		const updateFields = ctx.getNodeParameter('updateFields', itemIndex) as IDataObject;
 
@@ -220,10 +263,10 @@ export class UpdateHandler implements OperationHandler {
 export class MoveHandler implements OperationHandler {
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
 		//https://api.todoist.com/sync/v9/sync
-		const taskId = ctx.getNodeParameter('taskId', itemIndex) as number;
+		const taskId = ctx.getNodeParameter('taskId', itemIndex) as string;
 		const projectId = ctx.getNodeParameter('project', itemIndex, undefined, {
 			extractValue: true,
-		}) as number;
+		}) as string;
 		const nodeVersion = ctx.getNode().typeVersion;
 
 		const body: SyncRequest = {
@@ -235,7 +278,7 @@ export class MoveHandler implements OperationHandler {
 						id: taskId,
 						// Set section_id only if node version is below 2.1
 						...(nodeVersion < 2.1
-							? { section_id: ctx.getNodeParameter('section', itemIndex) as number }
+							? { section_id: ctx.getNodeParameter('section', itemIndex) as string }
 							: {}),
 					},
 				},
@@ -248,7 +291,7 @@ export class MoveHandler implements OperationHandler {
 			if (options.parent) {
 				body.commands[0].args.parent_id = options.parent as string;
 			} else if (options.section) {
-				body.commands[0].args.section_id = options.section as number;
+				body.commands[0].args.section_id = options.section as string;
 			} else {
 				body.commands[0].args.project_id = projectId;
 			}
@@ -264,7 +307,7 @@ export class SyncHandler implements OperationHandler {
 		const commandsJson = ctx.getNodeParameter('commands', itemIndex) as string;
 		const projectId = ctx.getNodeParameter('project', itemIndex, undefined, {
 			extractValue: true,
-		}) as number;
+		}) as string;
 		const sections = await getSectionIds(ctx, projectId);
 		const commands: Command[] = jsonParse(commandsJson);
 		const tempIdMapping = new Map<string, string>();
@@ -298,7 +341,7 @@ export class SyncHandler implements OperationHandler {
 		command.uuid = uuid();
 	}
 
-	private enrichSection(command: Command, sections: Map<string, number>) {
+	private enrichSection(command: Command, sections: Map<string, string>) {
 		if (command.args?.section !== undefined) {
 			const sectionId = sections.get(command.args.section);
 			if (sectionId) {
@@ -312,7 +355,7 @@ export class SyncHandler implements OperationHandler {
 		}
 	}
 
-	private enrichProjectId(command: Command, projectId: number) {
+	private enrichProjectId(command: Command, projectId: string) {
 		if (this.requiresProjectId(command)) {
 			command.args.project_id = projectId;
 		}
@@ -322,10 +365,10 @@ export class SyncHandler implements OperationHandler {
 		return command.type === CommandTypes.ITEM_ADD;
 	}
 
-	private enrichTempId(command: Command, tempIdMapping: Map<string, string>, projectId: number) {
+	private enrichTempId(command: Command, tempIdMapping: Map<string, string>, projectId: string) {
 		if (this.requiresTempId(command)) {
 			command.temp_id = uuid();
-			tempIdMapping.set(command.temp_id!, projectId as unknown as string);
+			tempIdMapping.set(command.temp_id!, projectId);
 		}
 	}
 
@@ -341,7 +384,7 @@ export class GetOrCreateTask implements OperationHandler {
 		const content = ctx.getNodeParameter('content', itemIndex) as string;
 		const projectId = ctx.getNodeParameter('project', itemIndex, undefined, {
 			extractValue: true,
-		}) as number;
+		}) as string;
 		const options = ctx.getNodeParameter('options', itemIndex) as IDataObject;
 
 		// First, get all tasks in the project to check if one with the same content exists

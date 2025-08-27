@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-08-27
+
+### Changed
+- **BREAKING**: Migrated from Todoist REST API v2 to the new unified Todoist API v1
+- API endpoint changed from `api.todoist.com/rest/v2/` to `api.todoist.com/api/v1/`
+- All list operations now support cursor-based pagination for improved performance
+- Task filtering operations now use dedicated `/tasks/filter` endpoint
+- All resource IDs are now opaque strings instead of numeric values
+
+### Added
+- Cursor-based pagination support for all list operations (tasks, projects, sections, labels, comments)
+- Dedicated filter endpoint for tasks with advanced filter syntax support
+- Enhanced error handling for the new API structure
+- Better response handling with `results` array structure
+
+### Technical Details
+- Automatic pagination handling with `next_cursor` support
+- Response structure now includes `results` array for list operations
+- Maintains full backwards compatibility in n8n interface
+- All existing functionality preserved while gaining performance improvements
+
+### Migration Notes
+- No changes required for existing workflows - all n8n interfaces remain the same
+- Existing credentials continue to work unchanged
+- Better performance for large data sets due to improved pagination
+- Enhanced reliability with the new unified API structure
+
 ## [1.0.0] - 2025-08-27
 
 ### Added

@@ -4,10 +4,29 @@ import { IDataObject } from 'n8n-workflow';
 
 export class GetAllPersonalLabels implements OperationHandler {
 	async handleOperation(ctx: Context, _: number): Promise<TodoistResponse> {
-		const data = await todoistApiRequest.call(ctx, 'GET', '/labels');
+		let allResults: any[] = [];
+		let nextCursor: string | null = null;
+		
+		do {
+			const qs: IDataObject = {};
+			if (nextCursor) {
+				qs.cursor = nextCursor;
+			}
+
+			const response = await todoistApiRequest.call(ctx, 'GET', '/labels', {}, qs);
+			const results = response.results || response;
+			
+			if (Array.isArray(results)) {
+				allResults = allResults.concat(results);
+			} else {
+				allResults.push(results);
+			}
+
+			nextCursor = response.next_cursor;
+		} while (nextCursor);
 
 		return {
-			data,
+			data: allResults as any,
 		};
 	}
 }
@@ -57,8 +76,6 @@ export class UpdatePersonalLabel implements OperationHandler {
 				is_favorite: options.isFavorite,
 			}).filter(([_, value]) => value !== null && value !== undefined),
 		);
-
-		console.log(body);
 
 		const data = await todoistApiRequest.call(
 			ctx,

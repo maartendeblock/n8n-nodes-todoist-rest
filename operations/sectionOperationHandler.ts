@@ -5,17 +5,33 @@ import { IDataObject } from 'n8n-workflow';
 export class GetAllSections implements OperationHandler {
 	async handleOperation(ctx: Context, itemIndex: number): Promise<TodoistResponse> {
 		const options = ctx.getNodeParameter('options', itemIndex) as IDataObject;
+		
+		let allResults: any[] = [];
+		let nextCursor: string | null = null;
+		
+		do {
+			const qs: IDataObject = {};
+			if (options.projectId) {
+				qs.project_id = options.projectId;
+			}
+			if (nextCursor) {
+				qs.cursor = nextCursor;
+			}
 
-		const qs: IDataObject = {};
+			const response = await todoistApiRequest.call(ctx, 'GET', '/sections', {}, qs);
+			const results = response.results || response;
+			
+			if (Array.isArray(results)) {
+				allResults = allResults.concat(results);
+			} else {
+				allResults.push(results);
+			}
 
-		if (options.projectId) {
-			qs.project_id = options.projectId;
-		}
-
-		const data = await todoistApiRequest.call(ctx, 'GET', '/sections', {}, qs);
+			nextCursor = response.next_cursor;
+		} while (nextCursor);
 
 		return {
-			data,
+			data: allResults as any,
 		};
 	}
 }

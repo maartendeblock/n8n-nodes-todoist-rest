@@ -14,20 +14,38 @@ export class GetAllComments implements OperationHandler {
 		const mode = idObject['mode'] as string;
 
 		const parameterName = parameterOptions[mode];
+		
+		let allResults: any[] = [];
+		let nextCursor: string | null = null;
+		
+		do {
+			const queryParameters: IDataObject = {};
+			queryParameters[parameterName] = id;
+			if (nextCursor) {
+				queryParameters.cursor = nextCursor;
+			}
 
-		const queryParameters: IDataObject = {};
-		queryParameters[parameterName] = id;
+			const response = await todoistApiRequest.call(
+				ctx,
+				'GET',
+				'/comments',
+				{},
+				queryParameters as IDataObject,
+			);
+			
+			const results = response.results || response;
+			
+			if (Array.isArray(results)) {
+				allResults = allResults.concat(results);
+			} else {
+				allResults.push(results);
+			}
 
-		const data = await todoistApiRequest.call(
-			ctx,
-			'GET',
-			'/comments',
-			{},
-			queryParameters as IDataObject,
-		);
+			nextCursor = response.next_cursor;
+		} while (nextCursor);
 
 		return {
-			data,
+			data: allResults as any,
 		};
 	}
 }
