@@ -120,7 +120,7 @@ pnpm build
 
 ## API Compatibility
 
-This node uses **Todoist REST API v2** for maximum stability and feature support.
+This node uses **Todoist REST API v1** for maximum stability and feature support.
 
 ## Contributing
 
@@ -133,5 +133,5 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## Support
 
 - 📧 Issues: [GitHub Issues](https://github.com/maartendeblock/n8n-nodes-todoist-rest/issues)
-- 📖 Documentation: [Todoist API Docs](https://developer.todoist.com/rest/v2/)
+- 📖 Documentation: [Todoist API Docs](https://developer.todoist.com/api/v1/)
 - 💬 n8n Community: [n8n Community Forum](https://community.n8n.io/)

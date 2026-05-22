@@ -143,7 +143,7 @@ export class GetAllHandler implements OperationHandler {
 		// Filter-specific parameters (only for filter endpoint)
 		if (shouldUseFilterEndpoint) {
 			if (filters.filter) {
-				qs.filter = filters.filter as string;
+				qs.query = filters.filter as string;
 			}
 			if (filters.lang) {
 				qs.lang = filters.lang as string;

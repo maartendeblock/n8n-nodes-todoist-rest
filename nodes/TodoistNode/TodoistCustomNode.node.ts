@@ -22,13 +22,13 @@ import { OperationType } from '../../types/index';
 export class TodoistCustomNode implements INodeType {
 	methods = customMethods;
 	description: INodeTypeDescription = {
-		displayName: 'Todoist Custom Node',
+		displayName: 'Todoist rest v1',
 		name: 'todoistCustomNode',
 		group: ['output'],
 		icon: 'file:todoist.svg',
 		version: 1,
 		defaults: {
-			name: 'Todoist Custom Node',
+			name: 'Todoist rest v1',
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
