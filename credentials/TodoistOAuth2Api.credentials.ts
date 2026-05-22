@@ -7,7 +7,7 @@ export class TodoistOAuth2Api implements ICredentialType {
 
 	displayName = 'Todoist OAuth2 API';
 
-	documentationUrl = 'todoist';
+	documentationUrl = 'https://developer.todoist.com/rest/v1/';
 
 	properties: INodeProperties[] = [
 		{

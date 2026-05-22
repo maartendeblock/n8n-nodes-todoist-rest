@@ -4,7 +4,6 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeConnectionTypes,
 } from 'n8n-workflow';
 
 import {
@@ -30,8 +29,8 @@ export class TodoistCustomNode implements INodeType {
 		defaults: {
 			name: 'Todoist rest v1',
 		},
-		inputs: [NodeConnectionTypes.Main],
-		outputs: [NodeConnectionTypes.Main],
+		inputs: ['main'],
+		outputs: ['main'],
 		description: 'A custom node for Todoist with additional request options',
 		usableAsTool: true,
 		credentials: [
@@ -78,9 +77,14 @@ export class TodoistCustomNode implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
-						name: 'Task',
-						value: 'task',
-						description: 'Task resource',
+						name: 'Comment',
+						value: 'comments',
+						description: 'Comments resource',
+					},
+					{
+						name: 'Label',
+						value: 'labels',
+						description: 'Labels resource',
 					},
 					{
 						name: 'Project',
@@ -93,14 +97,9 @@ export class TodoistCustomNode implements INodeType {
 						description: 'Section resource',
 					},
 					{
-						name: 'Comment',
-						value: 'comments',
-						description: 'Comments resource',
-					},
-					{
-						name: 'Label',
-						value: 'labels',
-						description: 'Labels resource',
+						name: 'Task',
+						value: 'task',
+						description: 'Task resource',
 					},
 				],
 				default: 'task',
