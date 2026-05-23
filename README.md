@@ -5,6 +5,8 @@
 
 A comprehensive n8n community node for Todoist REST API integration, providing advanced task management capabilities including subtask support and complex workflow operations.
 
+> ⚠️ **Beta.** Published on the `beta` channel (`2.0.x-beta`). Install with `n8n-nodes-todoist-rest@beta`. Feedback and issues welcome.
+
 ## Features
 
 ### 🎯 Complete Todoist Integration

@@ -1,0 +1,47 @@
+name: Publish to npm
+
+# Publishes the package to npm with provenance when a GitHub Release is
+# published. Prerelease versions (e.g. 2.0.1-beta.1) go to the "beta" dist-tag
+# so they don't become "latest". Requires an NPM_TOKEN repository secret
+# (an npm automation/granular token with publish rights).
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # required for npm provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+
+      - name: Publish (prerelease -> beta tag, stable -> latest)
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [[ "$VERSION" == *-* ]]; then
+            echo "Publishing prerelease $VERSION under 'beta' tag"
+            npm publish --provenance --access public --tag beta
+          else
+            echo "Publishing stable $VERSION under 'latest' tag"
+            npm publish --provenance --access public
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
